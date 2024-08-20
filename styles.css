@@ -1,0 +1,79 @@
+/* Reset styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Apply styles */
+html,
+body,
+.wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  font-family: 'Gill Sans',
+               'Gill Sans MT',
+                Calibri,
+               'Trebuchet MS',
+                sans-serif;
+}
+
+.wrapper,
+#calculator {
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+  display: grid;
+  place-items: center;
+}
+
+#calculator {
+  width: 50%;
+  padding: 2%;
+  align-items: end;
+  border: solid 1px;
+  border-radius: 4px;
+}
+
+#display {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  margin-bottom: 2%;
+}
+
+#calculation {
+  height: 22px;
+  font-size: larger;
+}
+
+#number {
+  height: 55px;
+  font-size: xxx-large;
+}
+
+.btns {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+}
+
+.btn {
+  width: 100%;
+  aspect-ratio: 4/3;
+  font-size: x-large;
+}
+
+@media only screen and (max-width: 600px) {
+  /* For mobile phones: */
+  #calculator {
+    width: 80%;
+  }
+}
