@@ -153,9 +153,9 @@ function handlePoint() {
  * Toggle the sign of the current number between positive and negative.
  */
 function toggleNegation() {
-  numberElem.textContent = numberElem.textContent.includes('-')
-    ? numberElem.textContent.replace('-', '')
-    : `-${numberElem.textContent}`;
+  numberElem.textContent = !numberElem.textContent.includes('-') && (numberElem.textContent !== '0')
+    ? `-${numberElem.textContent}`
+    : numberElem.textContent.replace('-', '');
 }
 
 /**
@@ -211,8 +211,13 @@ function parse(expression) {
         tokens.push(parseFloat(currentNumber));
         currentNumber = '';
       }
-      // Push the operator to tokens
-      tokens.push(char);
+      // Handle case where '-' might indicate a negative number
+      if (char === '-' && (tokens.length === 0 || '+-*/'.includes(tokens[tokens.length - 1]))) {
+        // Start building the next number as negative
+        currentNumber = '-';
+      } else {
+        tokens.push(char);
+      }
     } else if (char.trim() === '') {
       // Ignore spaces
       continue;
@@ -252,10 +257,16 @@ function evaluateExpression(expression) {
         break;
       }
       case '-': {
-        // Apply negation for subtraction
-        const rightValue = parts[++i];
-        if (typeof rightValue === 'number') {
-          processed.push(-1 * rightValue);
+        // Subtraction or negation
+        const nextPart = parts[i + 1];
+        if (typeof nextPart === 'number') {
+          if (processed.length > 0 && typeof processed[processed.length - 1] === 'number') {
+            processed.push(-nextPart);  // apply negation for subtraction
+            i++;  // skip the next part since it's already been processed
+          } else {
+            processed.push(nextPart);  // apply negation for the first operand
+            i++;
+          }
         } else {
           throw new Error('Invalid expression: Expected a number after "-"');
         }
